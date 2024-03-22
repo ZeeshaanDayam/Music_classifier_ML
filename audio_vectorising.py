@@ -1,10 +1,13 @@
 import pandas as pd
+import os
+import librosa
 
 
-def extract_features_from_chunks(input_dir='chunks'):
+def extract_features_from_chunks(input_dir='chunks', output_csv='features.csv'):
     """
-    Extract MFCC features from each audio chunk in the input directory.
+    Extract MFCC features from each audio chunk in the input directory and save them to a CSV file.
     :param input_dir: Directory containing audio chunks.
+    :param output_csv: Path to the CSV file where the features should be saved.
     :return: A Pandas DataFrame containing the features for each chunk.
     """
     features = []
@@ -29,6 +32,10 @@ def extract_features_from_chunks(input_dir='chunks'):
     # Create a DataFrame
     feature_columns = ['filename'] + [f'mfcc_{i}' for i in range(1, 14)]
     df_features = pd.DataFrame(features, columns=feature_columns)
+
+    # Save the DataFrame to a CSV file
+    df_features.to_csv(output_csv, index=False)
+    print(f"Features saved to {output_csv}")
 
     return df_features
 
